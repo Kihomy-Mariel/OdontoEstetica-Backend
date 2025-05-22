@@ -13,14 +13,16 @@ export class Usuario {
   @Column()
   password: string;
 
-  @Column({ type: 'bit' })
+  @Column({ default: true })
   habilitado: boolean;
+
 
   @ManyToOne(() => Rol, rol => rol.usuarios)
   @JoinColumn({ name: 'idRol' })
   rol: Rol;
 
-  @OneToOne(() => Persona)
-  @JoinColumn({ name: 'personaIdPersona' }) // <- CORRECTO según tu estructura
+  @OneToOne(() => Persona, persona => persona.usuario)
   persona: Persona;
+
+
 }

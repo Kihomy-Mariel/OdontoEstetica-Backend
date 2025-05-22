@@ -7,6 +7,17 @@ import { PersonaModule } from './persona/persona.module';
 import { RolModule } from './rol/rol.module';
 import { PrivilegioModule } from './privilegio/privilegio.module';
 import { RolPrivilegioModule } from './rol-privilegio/rol-privilegio.module';
+import { PacienteModule } from './paciente/paciente.module';
+import { EmpleadoModule } from './empleado/empleado.module';
+import { TurnoModule } from './turno/turno.module';
+import { AsistenciaModule } from './asistencia/asistencia.module';
+import { ServicioModule } from './servicio/servicio.module';
+import { AgendaModule } from './agenda/agenda.module';
+import { HistorialClinicoModule } from './historial-clinico/historial-clinico.module';
+import { ArchivoClinicoModule } from './archivo-clinico/archivo-clinico.module';
+import { OdontogramaModule } from './odontograma/odontograma.module';
+import { OdontogramaDetalleModule } from './odontograma-detalle/odontograma-detalle.module';
+import { CitaModule } from './cita/cita.module';
 
 @Module({
   imports: [
@@ -32,6 +43,17 @@ import { RolPrivilegioModule } from './rol-privilegio/rol-privilegio.module';
     RolModule,
     PrivilegioModule,
     RolPrivilegioModule,
+    PacienteModule,
+    EmpleadoModule,
+    TurnoModule,
+    AsistenciaModule,
+    ServicioModule,
+    AgendaModule,
+    HistorialClinicoModule,
+    ArchivoClinicoModule,
+    OdontogramaModule,
+    OdontogramaDetalleModule,
+    CitaModule,
   ],
 })
 export class AppModule {}
