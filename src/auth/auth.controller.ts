@@ -16,6 +16,7 @@ import { LoginResponseDto }    from './dto/login-response.dto';
 import { CreateUsuarioCompletoDto } from './dto/create-usuario-completo.dto';
 import { Usuario }             from '../usuario/entities/usuario.entity';
 import { CreateUsuarioDto } from 'usuario/dto/create-usuario.dto';
+import { RegisterPacienteDto } from './dto/register-paciente.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -47,20 +48,11 @@ export class AuthController {
     return rest;
   }
 
-// src/auth/auth.controller.ts
 
-  @Post('register-full')
-  @HttpCode(HttpStatus.CREATED)
-  async registrarCompleto(
-    @Body() dto: CreateUsuarioCompletoDto,
-  ): Promise<Partial<Usuario>> {
-    try {
-      const usuario = await this.usuarioService.crearCompleto(dto);
-      const { password, ...rest } = usuario;
-      return rest;
-    } catch (err) {
-      console.error('🔥 Error en register-full:', err);
-      throw err;
-    }
-  }
+
+@Post('register-paciente')
+async registerPaciente(@Body() dto: RegisterPacienteDto) {
+  return this.authService.registerPaciente(dto);
+}
+
 }

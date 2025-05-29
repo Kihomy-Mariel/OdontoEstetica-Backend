@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsBoolean } from 'class-validator';
+import { IsString, IsNumber, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreateServicioDto {
   @IsString()
@@ -13,6 +13,4 @@ export class CreateServicioDto {
   @IsString()
   duracionEstimada: string;
 
-  @IsBoolean()
-  readonly habilitado: boolean;
 }

@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsuarioService } from '../usuario/usuario.service';
 import * as bcrypt from 'bcrypt';
 import { LoginResponseDto } from './dto/login-response.dto';
+import { RegisterPacienteDto } from './dto/register-paciente.dto';
 
 
 @Injectable()
@@ -59,6 +60,13 @@ async login(user: any): Promise<LoginResponseDto> {
     },
   };
 }
+
+
+async registerPaciente(dto: RegisterPacienteDto) {
+  return this.usuarioService.crearUsuarioPaciente(dto);
+}
+
+
 
 }
 
