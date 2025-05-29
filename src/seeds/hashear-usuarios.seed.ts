@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 import { Usuario } from 'usuario/entities/usuario.entity';
 import { Persona } from 'persona/entities/persona.entity';
