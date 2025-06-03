@@ -21,7 +21,7 @@ import { CitaModule } from './cita/cita.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }), 
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -34,6 +34,9 @@ import { CitaModule } from './cita/cita.module';
         database: config.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: false,
+        ssl: {
+          rejectUnauthorized: false, // Es importante para Render
+        },
       }),
     }),
 
@@ -56,4 +59,4 @@ import { CitaModule } from './cita/cita.module';
     CitaModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
