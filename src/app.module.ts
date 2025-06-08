@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config'; // 👈 IMPORTANTE
@@ -18,6 +19,8 @@ import { ArchivoClinicoModule } from './archivo-clinico/archivo-clinico.module';
 import { OdontogramaModule } from './odontograma/odontograma.module';
 import { OdontogramaDetalleModule } from './odontograma-detalle/odontograma-detalle.module';
 import { CitaModule } from './cita/cita.module';
+import { PagoModule } from './pago/pago.module';
+import { ReciboModule } from './recibo/recibo.module';
 
 @Module({
   imports: [
@@ -26,17 +29,14 @@ import { CitaModule } from './cita/cita.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        type: 'postgres',
+        type: 'mysql',
         host: config.get('DB_HOST'),
-        port: parseInt(config.get('DB_PORT') || '5432'),
+        port: parseInt(config.get('DB_PORT') || '3307'),
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: false,
-        ssl: {
-          rejectUnauthorized: false, // Es importante para Render
-        },
       }),
     }),
 
@@ -57,6 +57,8 @@ import { CitaModule } from './cita/cita.module';
     OdontogramaModule,
     OdontogramaDetalleModule,
     CitaModule,
+    PagoModule,
+    ReciboModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}
