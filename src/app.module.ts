@@ -31,7 +31,7 @@ import { ReciboModule } from './recibo/recibo.module';
       useFactory: (config: ConfigService) => ({
         type: 'mysql',
         host: config.get('DB_HOST'),
-        port: parseInt(config.get('DB_PORT') || '3307'),
+        port: parseInt(config.get('DB_PORT') || '3306'),
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
