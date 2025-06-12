@@ -4,12 +4,7 @@ import { UpdateAsistenciaDto } from './dto/update-asistencia.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { AssignTurnoDto } from './dto/assign-turno.dto';
 import { RolesGuard } from 'common/guards/roles.guard';
-
-// src/common/decorators/roles.decorator.ts
-export const Roles = (...roles: number[]) =>
-  SetMetadata('roles', roles);
-
-
+import { Roles } from 'common/decorators/roles.decorator';
 
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @Controller('asistencias')

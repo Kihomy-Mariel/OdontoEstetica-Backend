@@ -32,9 +32,9 @@ export class ArchivoClinicoService {
     return this.repo.update(id, dto);
   }
 
-  remove(id: number) {
+ /* remove(id: number) {
     return this.repo.delete(id);
-  }
+  }*/
 
   // opcional: todos los archivos de un historial específico
   findByHistorial(idHistorial: number) {

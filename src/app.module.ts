@@ -18,6 +18,7 @@ import { ArchivoClinicoModule } from './archivo-clinico/archivo-clinico.module';
 import { OdontogramaModule } from './odontograma/odontograma.module';
 import { OdontogramaDetalleModule } from './odontograma-detalle/odontograma-detalle.module';
 import { CitaModule } from './cita/cita.module';
+import { CitaServicioModule } from './cita-servicio/cita-servicio.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { CitaModule } from './cita/cita.module';
     OdontogramaModule,
     OdontogramaDetalleModule,
     CitaModule,
+    CitaServicioModule,
   ],
 })
 export class AppModule {}

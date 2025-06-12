@@ -1,4 +1,3 @@
-// src/cita/cita.controller.ts
 import {
   Controller,
   Get,
@@ -8,6 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { CitaService } from './cita.service';
 import { CreateCitaDto } from './dto/create-cita.dto';
@@ -18,22 +18,22 @@ export class CitaController {
   constructor(private readonly service: CitaService) {}
 
   @Post()
-  create(@Body() dto: CreateCitaDto) {
+  async create(@Body() dto: CreateCitaDto) {
     return this.service.create(dto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.service.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.service.findOne(id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateCitaDto,
   ) {
@@ -41,17 +41,17 @@ export class CitaController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(@Param('id', ParseIntPipe) id: number) {
     return this.service.remove(id);
   }
 
   @Get('paciente/:idPaciente')
-  findByPaciente(@Param('idPaciente', ParseIntPipe) id: number) {
+  async findByPaciente(@Param('idPaciente', ParseIntPipe) id: number) {
     return this.service.findByPaciente(id);
   }
 
   @Get('agenda/:idAgenda')
-  findByAgenda(@Param('idAgenda', ParseIntPipe) id: number) {
+  async findByAgenda(@Param('idAgenda', ParseIntPipe) id: number) {
     return this.service.findByAgenda(id);
   }
 }

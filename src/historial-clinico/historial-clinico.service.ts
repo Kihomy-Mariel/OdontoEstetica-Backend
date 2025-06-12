@@ -32,10 +32,10 @@ export class HistorialClinicoService {
     return this.repo.update(id, dto);
   }
 
-  async remove(id: number) {
+ /* async remove(id: number) {
     const hc = await this.findOne(id);
     return this.repo.remove(hc);
-  }
+  } */
 async findByPaciente(idPaciente: number) {
     return this.repo.find({
       where: { idPaciente },

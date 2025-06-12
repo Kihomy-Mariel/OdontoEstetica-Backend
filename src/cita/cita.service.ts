@@ -1,5 +1,4 @@
-// src/cita/cita.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cita } from './entities/cita.entity';
@@ -14,16 +13,7 @@ export class CitaService {
   ) {}
 
   create(dto: CreateCitaDto) {
-    // Aquí creamos la cita usando solo los campos que vienen,
-    // el resto (estado, habilitado, idAgenda) toma los defaults de la entidad.
-    const cita = this.repo.create({
-      idPaciente: dto.idPaciente,
-      fecha: dto.fecha,
-      hora: dto.hora,
-      motivo: dto.motivo,
-      // estado = 'PENDIENTE' por default en la entidad
-      // idAgenda = null, habilitado = true por default
-    });
+    const cita = this.repo.create(dto);
     return this.repo.save(cita);
   }
 
@@ -31,16 +21,25 @@ export class CitaService {
     return this.repo.find({ order: { fecha: 'ASC', hora: 'ASC' } });
   }
 
-  findOne(id: number) {
-    return this.repo.findOne({ where: { idCita: id } });
+  async findOne(id: number) {
+    const cita = await this.repo.findOne({ where: { idCita: id } });
+    if (!cita) {
+      throw new NotFoundException(`Cita con id ${id} no encontrada`);
+    }
+    return cita;
   }
 
-  update(id: number, dto: UpdateCitaDto) {
-    return this.repo.update(id, dto);
+  async update(id: number, dto: UpdateCitaDto) {
+    await this.repo.update(id, dto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return this.repo.delete(id);
+  async remove(id: number) {
+    const result = await this.repo.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Cita con id ${id} no encontrada`);
+    }
+    return { message: `Cita con id ${id} eliminada` };
   }
 
   findByPaciente(idPaciente: number) {

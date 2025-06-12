@@ -6,7 +6,7 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  //Delete,
   ParseIntPipe,
 } from '@nestjs/common';
 import { HistorialClinicoService } from './historial-clinico.service';
@@ -42,10 +42,10 @@ export class HistorialClinicoController {
     return this.service.update(id, dto);
   }
 
-  @Delete(':id')
+/*  @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.service.remove(id);
-  }
+  } */
   // --- NUEVAS RUTAS ---
   /** Listar solo los historiales de un paciente */
   @Get('paciente/:idPaciente')

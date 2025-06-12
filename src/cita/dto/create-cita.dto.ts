@@ -4,7 +4,7 @@ import {
   IsString,
   IsIn,
   IsOptional,
-  IsBooleanString,
+  IsBoolean,
 } from 'class-validator';
 import { CitaEstado } from '../entities/cita.entity';
 
@@ -12,8 +12,10 @@ export class CreateCitaDto {
   @IsInt()
   idPaciente: number;
 
+  @IsInt()
+  idAgenda: number;
 
-  @IsIn(['PENDIENTE','CONFIRMADA','CANCELADA'])
+  @IsIn(['disponible','reservado','cancelada'])
   @IsOptional()
   estado?: CitaEstado;
 
@@ -27,6 +29,6 @@ export class CreateCitaDto {
   hora: string;
 
   @IsOptional()
-  @IsBooleanString()
+  @IsBoolean()
   habilitado?: boolean;
 }

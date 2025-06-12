@@ -1,10 +1,9 @@
-// src/agenda/entities/agenda.entity.ts
 import { Cita } from 'cita/entities/cita.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('agenda')
 export class Agenda {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'idAgenda' })
   idAgenda: number;
 
   @Column({ type: 'date' })
@@ -16,16 +15,15 @@ export class Agenda {
   @Column({ type: 'time' })
   horaFin: string;
 
-  @Column({ length: 20 })
+  @Column({ type: 'varchar', length: 20, default: 'disponible' })
   estado: string;
 
-  @Column('text')
+  @Column({ type: 'text' })
   observaciones: string;
 
-  @Column({ default: true })
+  @Column({ type: 'tinyint', width: 1, default: 1 })
   habilitado: boolean;
 
-  @OneToMany(() => Cita, c => c.agenda)
-  citas: Cita[];
-
+  @OneToMany(() => Cita, (cita) => cita.agenda)
+citas: Cita[];
 }

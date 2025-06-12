@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { Roles } from "asistencia/asistencia.controller";
+import { Roles } from "common/decorators/roles.decorator";
 import { RolesGuard } from "common/guards/roles.guard";
 import { EmpleadoService } from "./empleado.service";
 

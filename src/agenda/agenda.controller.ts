@@ -1,10 +1,19 @@
 // src/agenda/agenda.controller.ts
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { AgendaService } from './agenda.service';
 import { CreateAgendaDto } from './dto/create-agenda.dto';
 import { UpdateAgendaDto } from './dto/update-agenda.dto';
 
-@Controller('agenda')
+@Controller('agendas')
 export class AgendaController {
   constructor(private readonly service: AgendaService) {}
 
@@ -26,7 +35,7 @@ export class AgendaController {
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateAgendaDto
+    @Body() dto: UpdateAgendaDto,
   ) {
     return this.service.update(id, dto);
   }
