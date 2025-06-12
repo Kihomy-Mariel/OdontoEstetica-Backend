@@ -9,5 +9,6 @@ import { Agenda } from './entities/agenda.entity';
   imports: [TypeOrmModule.forFeature([Agenda])],
   providers: [AgendaService],
   controllers: [AgendaController],
+  exports: [AgendaService],
 })
 export class AgendaModule {}

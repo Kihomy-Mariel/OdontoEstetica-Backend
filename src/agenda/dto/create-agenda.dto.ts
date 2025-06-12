@@ -1,23 +1,31 @@
-// src/agenda/dto/create-agenda.dto.ts
-import { IsDateString, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDateString,
+  IsString,
+  IsIn,
+  IsBoolean,
+  IsOptional,
+  IsNotEmpty,
+} from 'class-validator';
 
 export class CreateAgendaDto {
   @IsDateString()
   fecha: string;
 
-  @IsNotEmpty()
   @IsString()
-  horaInicio: string; // 'HH:mm:ss' o 'HH:mm'
+  @IsNotEmpty()
+  horaInicio: string;
 
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   horaFin: string;
 
-  @IsString()
+  @IsIn(['reservada', 'disponible', 'cancelada'])
   estado: string;
 
   @IsString()
   observaciones: string;
 
-  // habilitado lo dejaremos true por defecto, no viene en el DTO
+  @IsOptional()
+  @IsBoolean()
+  habilitado?: boolean;
 }

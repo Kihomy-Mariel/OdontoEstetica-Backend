@@ -19,6 +19,7 @@ import { ArchivoClinicoModule } from './archivo-clinico/archivo-clinico.module';
 import { OdontogramaModule } from './odontograma/odontograma.module';
 import { OdontogramaDetalleModule } from './odontograma-detalle/odontograma-detalle.module';
 import { CitaModule } from './cita/cita.module';
+import { CitaServicioModule } from './cita-servicio/cita-servicio.module';
 import { PagoModule } from './pago/pago.module';
 import { ReciboModule } from './recibo/recibo.module';
 
@@ -57,6 +58,7 @@ import { ReciboModule } from './recibo/recibo.module';
     OdontogramaModule,
     OdontogramaDetalleModule,
     CitaModule,
+    CitaServicioModule,
     PagoModule,
     ReciboModule,
   ],

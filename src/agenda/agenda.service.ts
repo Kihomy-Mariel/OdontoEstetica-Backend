@@ -1,5 +1,5 @@
 // src/agenda/agenda.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Agenda } from './entities/agenda.entity';
@@ -14,22 +14,32 @@ export class AgendaService {
   ) {}
 
   create(dto: CreateAgendaDto) {
-    return this.repo.save(dto);
+    const agenda = this.repo.create(dto);
+    return this.repo.save(agenda); 11 
   }
 
   findAll() {
-    return this.repo.find({ where: { habilitado: true } });
+    return this.repo.find({ order: { fecha: 'ASC', horaInicio: 'ASC' } });
   }
 
-  findOne(id: number) {
-    return this.repo.findOneBy({ idAgenda: id });
+  async findOne(id: number) {
+    const agenda = await this.repo.findOne({ where: { idAgenda: id } });
+    if (!agenda) {
+      throw new NotFoundException(`Agenda con id ${id} no encontrada`);
+    }
+    return agenda;
   }
 
-  update(id: number, dto: UpdateAgendaDto) {
-    return this.repo.update(id, dto);
+  async update(id: number, dto: UpdateAgendaDto) {
+    await this.repo.update(id, dto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return this.repo.update(id, { habilitado: false });
+  async remove(id: number) {
+    const result = await this.repo.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Agenda con id ${id} no encontrada`);
+    }
+    return { message: `Agenda con id ${id} eliminada` };
   }
 }
