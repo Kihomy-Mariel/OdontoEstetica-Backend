@@ -7,7 +7,7 @@ import { Type } from 'class-transformer';
 
 import { CreatePersonaDto }   from './create-persona.dto';
 import { CreatePacienteDto }  from './create-paciente.dto';
-import { CreateEmpleadoDto }  from './create-empleado.dto';
+import { CreateEmpleadoDto } from 'empleado/dto/create-empleado.dto';
 
 export class CreateUsuarioCompletoDto {
   @IsString() @MinLength(3)   username: string;

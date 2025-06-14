@@ -1,5 +1,3 @@
-// src/auth/auth.controller.ts
-
 import {
   Controller,
   Post,
@@ -8,13 +6,11 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { AuthService }         from './auth.service';
-import { UsuarioService }      from '../usuario/usuario.service';    // ajusta ruta relativa
-import { LoginAuthDto }        from './dto/login-auth.dto';
-import { LoginResponseDto }    from './dto/login-response.dto';
-// Nuevo DTO completo
-import { CreateUsuarioCompletoDto } from './dto/create-usuario-completo.dto';
-import { Usuario }             from '../usuario/entities/usuario.entity';
+import { AuthService } from './auth.service';
+import { UsuarioService } from '../usuario/usuario.service';    // ajusta ruta relativa
+import { LoginAuthDto } from './dto/login-auth.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
+import { Usuario } from '../usuario/entities/usuario.entity';
 import { CreateUsuarioDto } from 'usuario/dto/create-usuario.dto';
 import { RegisterPacienteDto } from './dto/register-paciente.dto';
 
@@ -23,7 +19,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly usuarioService: UsuarioService,
-  ) {}
+  ) { }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -50,9 +46,9 @@ export class AuthController {
 
 
 
-@Post('register-paciente')
-async registerPaciente(@Body() dto: RegisterPacienteDto) {
-  return this.authService.registerPaciente(dto);
-}
+  @Post('register-paciente')
+  async registerPaciente(@Body() dto: RegisterPacienteDto) {
+    return this.authService.registerPaciente(dto);
+  }
 
 }

@@ -28,43 +28,43 @@ export class AuthService {
     return user;
   }
 
-async login(user: any): Promise<LoginResponseDto> {
-  /* ----- 1. PAYLOAD DEL TOKEN ----- */
-  const payload = {
-    sub:    user.idUsuario,          // ← «sub» estándar
-    username: user.username,
-    idRol:  user.rol?.idRol,         // 👈 ID numérico del rol  (lo usará RolesGuard)
-    rol:    user.rol?.nombre,        // (opcional) nombre para el frontend
-  };
+  async login(user: any): Promise<LoginResponseDto> {
+    /* ----- 1. PAYLOAD DEL TOKEN ----- */
+    const payload = {
+      sub: user.idUsuario,          // ← «sub» estándar
+      username: user.username,
+      idRol: user.rol?.idRol,         // 👈 ID numérico del rol  (lo usará RolesGuard)
+      rol: user.rol?.nombre,        // (opcional) nombre para el frontend
+    };
 
-  /* ----- 2. FIRMAR EL TOKEN ----- */
-  const token = this.jwtService.sign(payload);
+    /* ----- 2. FIRMAR EL TOKEN ----- */
+    const token = this.jwtService.sign(payload);
 
-  /* ----- 3. RESPUESTA AL FRONTEND ----- */
-  return {
-    token,                       // tu bearer token listo
-    id:         user.idUsuario,
-    username:   user.username,
-    idRol:      user.rol?.idRol, // (útil si el front lo quiere)
-    rol:        user.rol?.nombre,
-    privilegios: user.rol?.rolPrivilegios?.map(rp => rp.privilegio?.nombre) ?? [],
-    persona: {
-      nombres:          user.persona?.nombres,
-      apellidoPaterno:  user.persona?.apellidoPaterno,
-      apellidoMaterno:  user.persona?.apellidoMaterno,
-      ci:               user.persona?.ci,
-      fechaNacimiento:  user.persona?.fechaNacimiento,
-      telefono:         user.persona?.telefono,
-      email:            user.persona?.email,
-      fechaRegistro:    user.persona?.fechaRegistro,
-    },
-  };
-}
+    /* ----- 3. RESPUESTA AL FRONTEND ----- */
+    return {
+      token,                       // tu bearer token listo
+      id: user.idUsuario,
+      username: user.username,
+      idRol: user.rol?.idRol, // (útil si el front lo quiere)
+      rol: user.rol?.nombre,
+      privilegios: user.rol?.rolPrivilegios?.map(rp => rp.privilegio?.nombre) ?? [],
+      persona: {
+        nombres: user.persona?.nombres,
+        apellidoPaterno: user.persona?.apellidoPaterno,
+        apellidoMaterno: user.persona?.apellidoMaterno,
+        ci: user.persona?.ci,
+        fechaNacimiento: user.persona?.fechaNacimiento,
+        telefono: user.persona?.telefono,
+        email: user.persona?.email,
+        fechaRegistro: user.persona?.fechaRegistro,
+      },
+    };
+  }
 
 
-async registerPaciente(dto: RegisterPacienteDto) {
-  return this.usuarioService.crearUsuarioPaciente(dto);
-}
+  async registerPaciente(dto: RegisterPacienteDto) {
+    return this.usuarioService.crearUsuarioPaciente(dto);
+  }
 
 
 
