@@ -4,23 +4,29 @@ import { Proveedor } from '../../proveedor/entities/proveedor.entity';
 
 @Entity('compra')
 export class Compra {
-  @PrimaryGeneratedColumn({ name: 'idCompra' })
+  @PrimaryGeneratedColumn()
   idCompra: number;
 
-  @Column({ name: 'fechaCompra', type: 'date' })
-  fechaCompra: string;
+  @Column()
+  idEmpleado: number;
 
-  @Column({ name: 'estado', type: 'varchar', length: 20 })
+  @Column()
+  idProveedor: number;
+
+  @Column({ type: 'date' })
+  fechaCompra: Date;
+
+  @Column({ length: 20 })
   estado: string;
 
-  @Column({ name: 'precioTotalCompra', type: 'decimal', precision: 10, scale: 2 })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   precioTotalCompra: number;
 
-  @ManyToOne(() => Empleado, (empleado) => empleado.compras)
+  @ManyToOne(() => Empleado, empleado => empleado.compras)
   @JoinColumn({ name: 'idEmpleado' })
   empleado: Empleado;
 
-  @ManyToOne(() => Proveedor, (proveedor) => proveedor.compras)
+  @ManyToOne(() => Proveedor, proveedor => proveedor.compras)
   @JoinColumn({ name: 'idProveedor' })
   proveedor: Proveedor;
 }

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
+import { Compra } from 'compra/entities/compra.entity';
 
 @Entity('proveedor')
 export class Proveedor {
@@ -19,4 +20,7 @@ export class Proveedor {
 
   @Column({ type: 'tinyint', default: 1 })
   habilitado: number;
+
+    @OneToMany(() => Compra, compra => compra.proveedor)
+  compras: Compra[];
 }

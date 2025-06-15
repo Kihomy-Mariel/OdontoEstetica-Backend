@@ -1,10 +1,14 @@
-import { CompraModule } from './compra/compra.module';
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Compra } from './entities/compra.entity';
+import { Empleado } from '../empleado/entities/empleado.entity';
+import { Proveedor } from '../proveedor/entities/proveedor.entity';
+import { CompraService } from './compra.service';
+import { CompraController } from './compra.controller';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot(/* config */),
-    CompraModule,
-    // otros módulos...
-  ],
+  imports: [TypeOrmModule.forFeature([Compra, Empleado, Proveedor])],
+  controllers: [CompraController],
+  providers: [CompraService],
 })
-export class AppModule {}
+export class CompraModule {}

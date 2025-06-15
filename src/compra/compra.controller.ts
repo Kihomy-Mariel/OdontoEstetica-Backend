@@ -17,8 +17,7 @@ export class CompraController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.compraService.findOne(id);
+  findOne(@Param('id') id: string) {
+    return this.compraService.findOne(+id);
   }
 }
-
