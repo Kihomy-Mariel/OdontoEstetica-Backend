@@ -24,6 +24,7 @@ import { PagoModule } from './pago/pago.module';
 import { ReciboModule } from './recibo/recibo.module';
 import { ProductoModule } from './producto/producto.module';
 import { CompraModule } from './compra/compra.module';
+import { ProveedorModule } from './proveedor/proveedor.module';
 
 @Module({
   imports: [
@@ -64,7 +65,11 @@ import { CompraModule } from './compra/compra.module';
     PagoModule,
     ReciboModule,
     ProductoModule,
+<<<<<<< HEAD
     CompraModule,
+=======
+    ProveedorModule,
+>>>>>>> 254cd62a52b198eec4cecc3c534ea38a65234ca6
   ],
 })
 export class AppModule {}

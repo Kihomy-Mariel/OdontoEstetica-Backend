@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Turno } from './entities/turno.entity';
@@ -24,9 +24,15 @@ export class TurnoService {
     return this.repo.findOneBy({ idTurno: id });
   }
 
-  update(id: number, dto: UpdateTurnoDto) {
-    return this.repo.update(id, dto);
-  }
+async update(id: number, dto: UpdateTurnoDto) {
+  const turno = await this.repo.findOneBy({ idTurno: id });
+  if (!turno) throw new NotFoundException('Turno no encontrado');
+
+  Object.assign(turno, dto); // <-- actualiza solo lo enviado
+
+  return this.repo.save(turno);
+}
+
 
   remove(id: number) {
     return this.repo.update(id, { habilitado: false });
