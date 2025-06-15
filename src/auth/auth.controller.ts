@@ -7,7 +7,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UsuarioService } from '../usuario/usuario.service';    // ajusta ruta relativa
+import { UsuarioService } from '../usuario/usuario.service';    
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { Usuario } from '../usuario/entities/usuario.entity';

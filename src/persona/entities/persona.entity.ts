@@ -21,7 +21,7 @@ export class Persona {
   habilitado: boolean;
 
 
-  @OneToOne(() => Usuario, usuario => usuario.persona, { eager: false })
+  @OneToOne(() => Usuario, usuario => usuario.persona)
   @JoinColumn({ name: 'idUsuario' })
   usuario: Usuario;
 
