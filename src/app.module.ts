@@ -23,6 +23,7 @@ import { CitaServicioModule } from './cita-servicio/cita-servicio.module';
 import { PagoModule } from './pago/pago.module';
 import { ReciboModule } from './recibo/recibo.module';
 import { ProductoModule } from './producto/producto.module';
+import { ProveedorModule } from './proveedor/proveedor.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { ProductoModule } from './producto/producto.module';
     PagoModule,
     ReciboModule,
     ProductoModule,
+    ProveedorModule,
   ],
 })
 export class AppModule {}
