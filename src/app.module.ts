@@ -65,11 +65,8 @@ import { ProveedorModule } from './proveedor/proveedor.module';
     PagoModule,
     ReciboModule,
     ProductoModule,
-<<<<<<< HEAD
     CompraModule,
-=======
     ProveedorModule,
->>>>>>> 254cd62a52b198eec4cecc3c534ea38a65234ca6
   ],
 })
 export class AppModule {}
