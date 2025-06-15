@@ -23,6 +23,7 @@ import { CitaServicioModule } from './cita-servicio/cita-servicio.module';
 import { PagoModule } from './pago/pago.module';
 import { ReciboModule } from './recibo/recibo.module';
 import { ProductoModule } from './producto/producto.module';
+import { CompraModule } from './compra/compra.module';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { ProductoModule } from './producto/producto.module';
       useFactory: (config: ConfigService) => ({
         type: 'mysql',
         host: config.get('DB_HOST'),
-        port: parseInt(config.get('DB_PORT') || '3306'),
+        port: parseInt(config.get('DB_PORT') || '3307'),
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
@@ -63,6 +64,7 @@ import { ProductoModule } from './producto/producto.module';
     PagoModule,
     ReciboModule,
     ProductoModule,
+    CompraModule,
   ],
 })
 export class AppModule {}
