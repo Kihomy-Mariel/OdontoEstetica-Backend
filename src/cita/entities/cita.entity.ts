@@ -44,6 +44,7 @@ export class Cita {
 
   @Column({ type: 'tinyint', width: 1, default: 1 })
   habilitado: boolean;
+  
   @OneToMany(() => CitaServicio, (cs) => cs.cita, { cascade: true })
-citaServicios: CitaServicio[];
+  citaServicios: CitaServicio[];
 }

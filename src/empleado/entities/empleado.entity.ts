@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Persona } from '../../persona/entities/persona.entity';
 import { Asistencia } from 'asistencia/entities/asistencia.entity';
+import { Realiza } from 'realiza/entities/realiza.entity';
 
 @Entity('empleado')
 export class Empleado {
@@ -30,5 +31,9 @@ export class Empleado {
   /* relación con asistencias */
   @OneToMany(() => Asistencia, a => a.empleado)   //  ←  CONSÉRVALO
   asistencias: Asistencia[];
+
+  @OneToMany(() => Realiza, (realiza) => realiza.empleado)
+realizaServicios: Realiza[];
+
 }
 

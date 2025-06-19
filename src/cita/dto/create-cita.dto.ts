@@ -15,9 +15,9 @@ export class CreateCitaDto {
   @IsInt()
   idAgenda: number;
 
-  @IsIn(['disponible','reservado','cancelada'])
   @IsOptional()
-  estado?: CitaEstado;
+  @IsIn(['PENDIENTE', 'CONFIRMADA', 'CANCELADA'])
+  estado?: CitaEstado = 'PENDIENTE';
 
   @IsString()
   motivo: string;
@@ -28,7 +28,4 @@ export class CreateCitaDto {
   @IsString()
   hora: string;
 
-  @IsOptional()
-  @IsBoolean()
-  habilitado?: boolean;
 }

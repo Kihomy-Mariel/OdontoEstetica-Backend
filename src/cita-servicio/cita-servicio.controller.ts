@@ -13,7 +13,7 @@ import { CitaServicioService } from './cita-servicio.service';
 import { CreateCitaServicioDto } from './dto/create-cita-servicio.dto';
 import { UpdateCitaServicioDto } from './dto/update-cita-servicio.dto';
 
-@Controller('cita-servicios')
+@Controller('cita-servicio')
 export class CitaServicioController {
   constructor(private readonly service: CitaServicioService) {}
 

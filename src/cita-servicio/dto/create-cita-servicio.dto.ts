@@ -1,5 +1,5 @@
 // src/cita-servicio/dto/create-cita-servicio.dto.ts
-import { IsInt, IsDecimal, IsString, IsNotEmpty } from 'class-validator';
+import { IsInt, IsString, IsNumber, Min } from 'class-validator';
 
 export class CreateCitaServicioDto {
   @IsInt()
@@ -8,14 +8,16 @@ export class CreateCitaServicioDto {
   @IsInt()
   idServicio: number;
 
-  @IsDecimal()
+  @IsNumber({ maxDecimalPlaces: 2 }, {
+    message: 'precioAplicado debe ser un número decimal válido con hasta 2 decimales.'
+  })
   precioAplicado: number;
 
   @IsInt()
+  @Min(1, { message: 'La cantidad de servicio debe ser al menos 1.' })
   cantidadServicio: number;
 
   @IsString()
-  @IsNotEmpty()
   observaciones: string;
 }
 

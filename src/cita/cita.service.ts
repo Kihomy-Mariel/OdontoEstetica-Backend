@@ -9,33 +9,34 @@ import { UpdateCitaDto } from './dto/update-cita.dto';
 export class CitaService {
   constructor(
     @InjectRepository(Cita)
-    private readonly repo: Repository<Cita>,
+    private readonly citaRepo: Repository<Cita>,
   ) {}
 
-  create(dto: CreateCitaDto) {
-    const cita = this.repo.create(dto);
-    return this.repo.save(cita);
+  async create(dto: CreateCitaDto): Promise<Cita> {
+    const cita = this.citaRepo.create(dto);
+    return await this.citaRepo.save(cita);
   }
 
-  findAll() {
-    return this.repo.find({ order: { fecha: 'ASC', hora: 'ASC' } });
+  findAll(): Promise<Cita[]> {
+    return this.citaRepo.find({ order: { fecha: 'ASC', hora: 'ASC' } });
   }
 
   async findOne(id: number) {
-    const cita = await this.repo.findOne({ where: { idCita: id } });
+    const cita = await this.citaRepo.findOne({ where: { idCita: id } });
     if (!cita) {
       throw new NotFoundException(`Cita con id ${id} no encontrada`);
     }
     return cita;
   }
 
-  async update(id: number, dto: UpdateCitaDto) {
-    await this.repo.update(id, dto);
-    return this.findOne(id);
+  async update(id: number, dto: UpdateCitaDto): Promise<Cita> {
+    await this.findOne(id);               // valida existencia
+    await this.citaRepo.update(id, dto);  // aplica cambios
+    return this.findOne(id);              // devuelve el registro actualizado
   }
 
   async remove(id: number) {
-    const result = await this.repo.delete(id);
+    const result = await this.citaRepo.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Cita con id ${id} no encontrada`);
     }
@@ -43,14 +44,14 @@ export class CitaService {
   }
 
   findByPaciente(idPaciente: number) {
-    return this.repo.find({
+    return this.citaRepo.find({
       where: { idPaciente },
       order: { fecha: 'ASC', hora: 'ASC' },
     });
   }
 
   findByAgenda(idAgenda: number) {
-    return this.repo.find({
+    return this.citaRepo.find({
       where: { idAgenda },
       order: { fecha: 'ASC', hora: 'ASC' },
     });

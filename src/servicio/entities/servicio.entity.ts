@@ -1,5 +1,6 @@
 import { CitaServicio } from 'cita-servicio/entities/cita-servicio.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Realiza } from 'realiza/entities/realiza.entity';
 
 @Entity('servicio')
 export class Servicio {
@@ -22,7 +23,10 @@ export class Servicio {
     habilitado: boolean;
 
     @OneToMany(() => CitaServicio, (cs) => cs.servicio)
-citaServicios: CitaServicio[];
+    citaServicios: CitaServicio[];
+
+    @OneToMany(() => Realiza, (realiza) => realiza.servicio)
+    realizadoPor: Realiza[];
 
 
 }

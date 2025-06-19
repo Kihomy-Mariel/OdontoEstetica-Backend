@@ -19,7 +19,7 @@ export class CitaServicioService {
   }
 
   findAll() {
-    return this.repo.find();
+    return this.repo.find({ relations: ['cita', 'servicio'] });
   }
 
   async findOne(idCita: number, idServicio: number) {

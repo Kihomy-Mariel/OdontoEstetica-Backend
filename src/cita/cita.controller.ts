@@ -15,43 +15,44 @@ import { UpdateCitaDto } from './dto/update-cita.dto';
 
 @Controller('citas')
 export class CitaController {
-  constructor(private readonly service: CitaService) {}
+  constructor(private readonly citaService: CitaService) {}
 
   @Post()
-  async create(@Body() dto: CreateCitaDto) {
-    return this.service.create(dto);
+  create(@Body() dto: CreateCitaDto) {
+    return this.citaService.create(dto);
   }
 
   @Get()
-  async findAll() {
-    return this.service.findAll();
+  findAll() {
+    return this.citaService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.service.findOne(id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.citaService.findOne(id);
   }
 
   @Patch(':id')
-  async update(
+  update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateCitaDto,
   ) {
-    return this.service.update(id, dto);
+    return this.citaService.update(id, dto);
   }
 
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    return this.service.remove(id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.citaService.remove(id);
   }
 
   @Get('paciente/:idPaciente')
   async findByPaciente(@Param('idPaciente', ParseIntPipe) id: number) {
-    return this.service.findByPaciente(id);
+    return this.citaService.findByPaciente(id);
   }
 
   @Get('agenda/:idAgenda')
   async findByAgenda(@Param('idAgenda', ParseIntPipe) id: number) {
-    return this.service.findByAgenda(id);
+    return this.citaService.findByAgenda(id);
   }
+  
 }

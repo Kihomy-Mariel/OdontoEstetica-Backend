@@ -10,18 +10,18 @@ export class CitaServicio {
   @PrimaryColumn()
   idServicio: number;
 
-  @ManyToOne(() => Cita, (cita) => cita.citaServicios, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Cita, (cita) => cita.citaServicios, { onDelete: 'CASCADE',eager: true })
   @JoinColumn({ name: 'idCita' })
   cita: Cita;
 
-  @ManyToOne(() => Servicio, (servicio) => servicio.citaServicios, { eager: true })
+  @ManyToOne(() => Servicio, (servicio) => servicio.citaServicios, { onDelete: 'CASCADE', eager: true })
   @JoinColumn({ name: 'idServicio' })
   servicio: Servicio;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   precioAplicado: number;
 
-  @Column()
+  @Column({ type: 'int' })
   cantidadServicio: number;
 
   @Column({ type: 'text' })
