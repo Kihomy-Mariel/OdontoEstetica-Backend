@@ -10,6 +10,8 @@ import {
 import { Persona } from '../../persona/entities/persona.entity';
 import { Asistencia } from 'asistencia/entities/asistencia.entity';
 import { Realiza } from 'realiza/entities/realiza.entity';
+import { Compra } from '../../compra/entities/compra.entity';
+
 
 @Entity('empleado')
 export class Empleado {
@@ -35,5 +37,7 @@ export class Empleado {
   @OneToMany(() => Realiza, (realiza) => realiza.empleado)
 realizaServicios: Realiza[];
 
+    @OneToMany(() => Compra, compra => compra.empleado)
+  compras: Compra[];
 }
 
