@@ -10,7 +10,7 @@ export class ProveedorService {
   constructor(
     @InjectRepository(Proveedor)
     private proveedorRepository: Repository<Proveedor>,
-  ) {}
+  ) { }
 
   async create(createProveedorDto: CreateProveedorDto): Promise<Proveedor> {
     const proveedor = this.proveedorRepository.create(createProveedorDto);
@@ -34,9 +34,9 @@ export class ProveedorService {
   }
 
   async remove(id: number): Promise<void> {
-    const result = await this.proveedorRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Proveedor ${id} no encontrado`);
-    }
+    const proveedor = await this.findOne(id);
+    proveedor.habilitado = 0;
+    await this.proveedorRepository.save(proveedor);
   }
+
 }
