@@ -1,9 +1,10 @@
 import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
 import { Compra } from 'compra/entities/compra.entity';
+import { PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('proveedor')
 export class Proveedor {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   idProveedor: number;
 
   @Column({ length: 100 })
@@ -21,6 +22,6 @@ export class Proveedor {
   @Column({ type: 'tinyint', default: 1 })
   habilitado: number;
 
-    @OneToMany(() => Compra, compra => compra.proveedor)
+  @OneToMany(() => Compra, compra => compra.proveedor)
   compras: Compra[];
 }

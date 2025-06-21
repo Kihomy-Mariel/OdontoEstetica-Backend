@@ -12,9 +12,9 @@ export class ProveedorService {
     private proveedorRepository: Repository<Proveedor>,
   ) {}
 
-  create(createProveedorDto: CreateProveedorDto): Promise<Proveedor> {
+  async create(createProveedorDto: CreateProveedorDto): Promise<Proveedor> {
     const proveedor = this.proveedorRepository.create(createProveedorDto);
-    return this.proveedorRepository.save(proveedor);
+    return await this.proveedorRepository.save(proveedor);
   }
 
   findAll(): Promise<Proveedor[]> {
