@@ -1,26 +1,59 @@
-import { Injectable } from '@nestjs/common';
+// src/recibo/recibo.service.ts
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Recibo } from './entities/recibo.entity';
 import { CreateReciboDto } from './dto/create-recibo.dto';
 import { UpdateReciboDto } from './dto/update-recibo.dto';
 
 @Injectable()
 export class ReciboService {
-  create(createReciboDto: CreateReciboDto) {
-    return 'This action adds a new recibo';
+  constructor(
+    @InjectRepository(Recibo)
+    private readonly reciboRepository: Repository<Recibo>
+  ) {}
+
+  async create(createReciboDto: CreateReciboDto): Promise<Recibo> {
+    const recibo = this.reciboRepository.create(createReciboDto);
+    return this.reciboRepository.save(recibo);
   }
 
-  findAll() {
-    return `This action returns all recibo`;
+  async findAll(): Promise<Recibo[]> {
+    return this.reciboRepository.find({
+      order: { fechaEmision: 'DESC' },
+      relations: [
+        'pago',
+        'pago.cita',
+        'pago.cita.paciente',
+        'pago.cita.paciente.persona',
+        'pago.cita.citaServicios',
+        'pago.cita.citaServicios.servicio'
+      ],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} recibo`;
+  async findOne(id: number): Promise<Recibo> {
+    const recibo = await this.reciboRepository.findOne({
+      where: { idRecibo: id },
+      relations: [
+        'pago',
+        'pago.cita',
+        'pago.cita.paciente',
+        'pago.cita.paciente.persona',
+        'pago.cita.citaServicios',
+        'pago.cita.citaServicios.servicio'
+      ],
+    });
+    if (!recibo) throw new NotFoundException(`Recibo con id ${id} no encontrado`);
+    return recibo;
   }
 
-  update(id: number, updateReciboDto: UpdateReciboDto) {
-    return `This action updates a #${id} recibo`;
+  async update(id: number, updateReciboDto: UpdateReciboDto): Promise<Recibo> {
+    await this.reciboRepository.update(id, updateReciboDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} recibo`;
+  async remove(id: number): Promise<void> {
+    await this.reciboRepository.delete(id);
   }
 }

@@ -5,13 +5,12 @@ import { UpdatePagoDto } from './dto/update-pago.dto';
 
 @Controller('pago')
 export class PagoController {
-  constructor(private readonly pagoService: PagoService) {}
+  constructor(private readonly pagoService: PagoService) { }
 
-@Post()
-create(@Body() createPagoDto: CreatePagoDto) {
-  console.log('POST /pago recibido', createPagoDto);
-  return this.pagoService.create(createPagoDto);
-}
+  @Post()
+  create(@Body() createPagoDto: CreatePagoDto, body: any) {
+    return this.pagoService.create(createPagoDto);
+  }
 
 
   @Get()
@@ -33,4 +32,12 @@ create(@Body() createPagoDto: CreatePagoDto) {
   remove(@Param('id') id: string) {
     return this.pagoService.remove(+id);
   }
+
+
+
+  @Get('/cita/:idCita')
+  findByCita(@Param('idCita') idCita: number) {
+    return this.pagoService.findByCita(idCita);
+  }
+
 }

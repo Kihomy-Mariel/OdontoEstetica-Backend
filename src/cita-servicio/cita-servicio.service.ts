@@ -11,7 +11,7 @@ export class CitaServicioService {
   constructor(
     @InjectRepository(CitaServicio)
     private readonly repo: Repository<CitaServicio>,
-  ) {}
+  ) { }
 
   async create(dto: CreateCitaServicioDto) {
     const citaServicio = this.repo.create(dto);
@@ -19,7 +19,7 @@ export class CitaServicioService {
   }
 
   findAll() {
-    return this.repo.find({ relations: ['cita', 'servicio'] });
+    return this.repo.find({ where: { habilitado: true }, relations: ['cita', 'servicio'] });
   }
 
   async findOne(idCita: number, idServicio: number) {
@@ -36,14 +36,18 @@ export class CitaServicioService {
   }
 
   async remove(idCita: number, idServicio: number) {
-    const result = await this.repo.delete({ idCita, idServicio });
-    if (result.affected === 0) {
+    const citaServicio = await this.repo.findOneBy({ idCita, idServicio });
+    if (!citaServicio) {
       throw new NotFoundException(`Servicio con idServicio ${idServicio} en cita ${idCita} no encontrado`);
     }
-    return { message: `Servicio con idServicio ${idServicio} en cita ${idCita} eliminado` };
+    // Elimina lógicamente
+    citaServicio.habilitado = false;
+    await this.repo.save(citaServicio);
+    return { message: `Servicio con idServicio ${idServicio} en cita ${idCita} deshabilitado (eliminación lógica)` };
   }
 
+
   findByCita(idCita: number) {
-    return this.repo.find({ where: { idCita } });
+    return this.repo.find({ where: { idCita, habilitado: true } });
   }
 }

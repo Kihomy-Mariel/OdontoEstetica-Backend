@@ -10,80 +10,106 @@ export class RealizaService {
   constructor(
     @InjectRepository(Realiza)
     private readonly repo: Repository<Realiza>,
-  ) { }
+  ) {}
 
-  create(dto: CreateRealizaDto) {
-    const entity = this.repo.create(dto);
+  /* ───────────────  CREATE  ─────────────── */
+  async create(dto: CreateRealizaDto) {
+    // Forzamos habilitado = true por seguridad
+    const entity = this.repo.create({ ...dto, habilitado: true });
     return this.repo.save(entity);
   }
 
+  /* ───────────────  READ  ─────────────── */
+
+  // Todos los realiza activos
   findAll() {
-    return this.repo.find();
+    return this.repo.find({
+      where: { habilitado: true },
+      relations: ['empleado', 'servicio'],
+    });
   }
 
+  // Uno en concreto (solo si está habilitado)
   async findOne(idEmpleado: number, idServicio: number) {
-    const record = await this.repo.findOne({ where: { idEmpleado, idServicio } });
+    const record = await this.repo.findOne({
+      where: { idEmpleado, idServicio, habilitado: true },
+    });
     if (!record) throw new NotFoundException('Registro no encontrado');
     return record;
   }
 
-  async update(idEmpleado: number, idServicio: number, dto: UpdateRealizaDto) {
+  /* ───────────────  UPDATE  ─────────────── */
+  async update(
+    idEmpleado: number,
+    idServicio: number,
+    dto: UpdateRealizaDto,
+  ) {
+    // Trae solo el activo
     const entity = await this.findOne(idEmpleado, idServicio);
-    Object.assign(entity, dto);
+
+    // Únicamente actualizamos observaciones
+    entity.observaciones = dto.observaciones?.trim() ?? entity.observaciones;
+
     return this.repo.save(entity);
   }
 
+  /* ───────────────  DELETE LÓGICO  ─────────────── */
   async remove(idEmpleado: number, idServicio: number) {
-    await this.findOne(idEmpleado, idServicio);
-    return this.repo.delete({ idEmpleado, idServicio });
+    const entity = await this.findOne(idEmpleado, idServicio);
+    entity.habilitado = false;
+    return this.repo.save(entity);           // devolvemos la entidad “deshabilitada”
   }
 
-  async findByEmpleado(idEmpleado: number): Promise<Realiza[]> {
+  /* ───────────────  QUERY POR EMPLEADO  ─────────────── */
+  findByEmpleado(idEmpleado: number) {
     return this.repo.find({
-      where: { idEmpleado, habilitado: true  },
-      relations: ['servicio'], // para traer los datos del servicio
+      where: { idEmpleado, habilitado: true },
+      relations: ['servicio'],
     });
   }
 
-  async findByServicio(idServicio: number): Promise<Realiza[]> {
+  /* ───────────────  QUERY POR SERVICIO  ─────────────── */
+  findByServicio(idServicio: number) {
     return this.repo.find({
-      where: { idServicio },
-      relations: ['empleado'], // para traer los datos del odontólogo
+      where: { idServicio, habilitado: true },
+      relations: ['empleado'],
     });
   }
 
-  async getServiciosConOdontologos(): Promise<any[]> {
-    const data = await this.repo.find({
-      relations: ['servicio', 'empleado', 'empleado.persona'], // traer los datos del servicio y del odontólogo
-      where: { habilitado: true }, // solo relaciones habilitadas
-    });
-    // Filtro adicional por empleados y servicios habilitados, si tienen ese campo
-    const filtrados = data.filter((item) =>
-      item.empleado?.habilitado !== false &&
-      item.servicio?.habilitado !== false &&
-      item.empleado?.cargo === 'Odontólogo' // solo odontólogos
-    );
-    const agrupado = new Map<number, any>();
+/* ───────────────  LISTA AGRUPADA  ─────────────── */
+async getServiciosConOdontologos() {
+  const data = await this.repo.find({
+    where: { habilitado: true },
+    relations: ['servicio', 'empleado', 'empleado.persona'],
+  });
 
-    for (const item of filtrados) {
-      const idServicio = item.idServicio;
+  // Filtra empleados y servicios activos, solo cargo “Odontólogo”
+  const filtrados = data.filter(
+    (r) =>
+      r.empleado?.habilitado &&
+      r.servicio?.habilitado &&
+      r.empleado?.cargo === 'Odontólogo',
+  );
 
-      if (!agrupado.has(idServicio)) {
-        agrupado.set(idServicio, {
-          servicio: item.servicio,
-          odontologos: [],
-        });
-      }
+  const mapa = new Map<number, { servicio: any; odontologos: any[] }>();
 
-      agrupado.get(idServicio).odontologos.push({
-        idEmpleado: item.idEmpleado,
-        nombres: item.empleado?.persona?.nombres,
-        apellidoMaterno: item.empleado?.persona?.apellidoMaterno,
-        apellidoPaterno: item.empleado?.persona?.apellidoPaterno, // o item.empleado?.persona?.nombre si lo tienes separado
-      });
+  filtrados.forEach((r) => {
+    let grupo = mapa.get(r.idServicio);
+
+    if (!grupo) {
+      grupo = { servicio: r.servicio, odontologos: [] };
+      mapa.set(r.idServicio, grupo);
     }
 
-    return Array.from(agrupado.values());
-  }
+    grupo.odontologos.push({
+      idEmpleado: r.idEmpleado,
+      nombres: r.empleado.persona?.nombres,
+      apellidoPaterno: r.empleado.persona?.apellidoPaterno,
+      apellidoMaterno: r.empleado.persona?.apellidoMaterno,
+    });
+  });
+
+  return Array.from(mapa.values());
+}
 
 }

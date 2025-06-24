@@ -36,4 +36,5 @@ export class Pago {
 
   @OneToMany(() => Recibo, recibo => recibo.pago)
   recibos: Recibo[];
+
 }
