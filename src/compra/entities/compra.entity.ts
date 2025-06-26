@@ -13,6 +13,9 @@ export class Compra {
   @Column()
   idProveedor: number;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  nombreProducto: string;
+
   @Column({ type: 'date' })
   fechaCompra: Date;
 

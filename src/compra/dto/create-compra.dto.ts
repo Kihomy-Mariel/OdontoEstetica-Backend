@@ -1,4 +1,4 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export enum EstadoCompra {
   PENDIENTE = 'pendiente',
@@ -14,6 +14,10 @@ export class CreateCompraDto {
   @IsNotEmpty()
   @IsNumber()
   idProveedor: number;
+
+  @IsOptional()
+  @IsString()
+  nombreProducto?: string;
 
   @IsNotEmpty()
   @IsDateString()
