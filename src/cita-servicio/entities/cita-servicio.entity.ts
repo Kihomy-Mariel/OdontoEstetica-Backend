@@ -26,4 +26,7 @@ export class CitaServicio {
 
   @Column({ type: 'text' })
   observaciones: string;
+
+  @Column({ type: 'tinyint', width: 1, default: 1 })
+  habilitado: boolean;
 }

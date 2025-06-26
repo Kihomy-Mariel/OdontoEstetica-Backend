@@ -1,9 +1,6 @@
 import { IsEmail, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateProveedorDto {
-  @IsInt()
-  idProveedor: number;
-
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)

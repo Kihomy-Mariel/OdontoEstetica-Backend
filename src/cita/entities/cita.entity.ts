@@ -47,4 +47,6 @@ export class Cita {
   
   @OneToMany(() => CitaServicio, (cs) => cs.cita, { cascade: true })
   citaServicios: CitaServicio[];
+
+
 }

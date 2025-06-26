@@ -1,4 +1,8 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateRealizaDto } from './create-realiza.dto';
+import { IsOptional, IsString, MaxLength } from 'class-validator';
 
-export class UpdateRealizaDto extends PartialType(CreateRealizaDto) {}
+export class UpdateRealizaDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  observaciones?: string;
+}

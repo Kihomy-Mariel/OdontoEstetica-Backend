@@ -10,7 +10,7 @@ export class PagoService {
   constructor(
     @InjectRepository(Pago)
     private readonly pagoRepository: Repository<Pago>,
-  ) {}
+  ) { }
 
   create(createPagoDto: CreatePagoDto): Promise<Pago> {
     const pago = this.pagoRepository.create(createPagoDto);
@@ -18,16 +18,35 @@ export class PagoService {
   }
 
   findAll(): Promise<Pago[]> {
-    return this.pagoRepository.find();
+    return this.pagoRepository.find({
+      order: { fechaPago: 'DESC' },
+      relations: ['cita',
+        'cita.paciente',
+        'cita.paciente.persona',
+        'cita.agenda',
+        'cita.citaServicios',
+        'cita.citaServicios.servicio',
+        'recibos'],
+    });
   }
 
-async findOne(id: number): Promise<Pago> {
-  const pago = await this.pagoRepository.findOneBy({ idPago: id });
-  if (!pago) {
-    throw new NotFoundException(`Pago con ID ${id} no encontrado`);
+  async findOne(id: number): Promise<Pago> {
+    const pago = await this.pagoRepository.findOne({
+      where: { idPago: id },
+      relations: [
+        'cita',
+        'cita.paciente',
+        'cita.paciente.persona',
+        'cita.agenda',
+        'cita.citaServicios',
+        'cita.citaServicios.servicio'
+      ],
+    });
+    if (!pago) {
+      throw new NotFoundException(`Pago con ID ${id} no encontrado`);
+    }
+    return pago;
   }
-  return pago;
-}
 
 
 
@@ -39,4 +58,14 @@ async findOne(id: number): Promise<Pago> {
   async remove(id: number): Promise<void> {
     await this.pagoRepository.delete(id);
   }
+
+
+  // pago.service.ts
+  async findByCita(idCita: number) {
+    return this.pagoRepository.find({
+      where: { idCita },
+      order: { fechaPago: 'DESC' }
+    });
+  }
+
 }
