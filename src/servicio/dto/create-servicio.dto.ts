@@ -13,4 +13,5 @@ export class CreateServicioDto {
   @IsString()
   duracionEstimada: string;
 
+
 }

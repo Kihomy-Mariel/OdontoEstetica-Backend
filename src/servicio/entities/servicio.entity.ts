@@ -28,5 +28,4 @@ export class Servicio {
     @OneToMany(() => Realiza, (realiza) => realiza.servicio)
     realizadoPor: Realiza[];
 
-
 }

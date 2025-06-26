@@ -4,7 +4,7 @@ import { Reflector } from "@nestjs/core";
 // src/common/guards/roles.guard.ts
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}   //  👈  falta esto
+  constructor(private readonly reflector: Reflector) {}   
 
   canActivate(ctx: ExecutionContext) {
     const required = this.reflector.get<number[]>('roles', ctx.getHandler());

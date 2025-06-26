@@ -20,4 +20,5 @@ export class UpdateServicioDto {
   @IsOptional()
   @IsBoolean()
   habilitado?: boolean;
+
 }
