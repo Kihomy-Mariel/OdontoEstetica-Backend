@@ -1,0 +1,13 @@
+name: Despliegue automático a Render
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Desencadenar despliegue en Render
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
