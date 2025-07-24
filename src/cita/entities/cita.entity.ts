@@ -18,11 +18,11 @@ export class Cita {
   @PrimaryGeneratedColumn({ name: 'idCita' })
   idCita: number;
 
-  @Column()
-  idPaciente: number;
-  @ManyToOne(() => Paciente, p => p.citas, { eager: true })
+
+  @ManyToOne(() => Paciente, paciente => paciente.citas)
   @JoinColumn({ name: 'idPaciente' })
   paciente: Paciente;
+
 
   @Column()
   idAgenda: number;
@@ -30,7 +30,7 @@ export class Cita {
   @JoinColumn({ name: 'idAgenda' })
   agenda: Agenda;
 
-  @Column({ type: 'varchar', length: 30, default: 'PENDIENTE' })
+  @Column({ type: 'varchar', length: 30, default: 'CONFIRMADO' })
   estado: CitaEstado;
 
   @Column({ type: 'varchar', length: 255 })
@@ -44,7 +44,7 @@ export class Cita {
 
   @Column({ type: 'tinyint', width: 1, default: 1 })
   habilitado: boolean;
-  
+
   @OneToMany(() => CitaServicio, (cs) => cs.cita, { cascade: true })
   citaServicios: CitaServicio[];
 

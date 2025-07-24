@@ -3,7 +3,7 @@ import { UsuarioService } from './usuario.service';
 import { AuthGuard } from '@nestjs/passport';
 
 // src/usuario/usuario.controller.ts
-@UseGuards(AuthGuard('jwt'))
+//@UseGuards(AuthGuard('jwt'))
 @Controller('usuarios')
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) { }

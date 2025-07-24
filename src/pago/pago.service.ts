@@ -33,15 +33,16 @@ export class PagoService {
   async findOne(id: number): Promise<Pago> {
     const pago = await this.pagoRepository.findOne({
       where: { idPago: id },
-      relations: [
-        'cita',
+      order: { fechaPago: 'DESC' },
+      relations: ['cita',
         'cita.paciente',
         'cita.paciente.persona',
         'cita.agenda',
         'cita.citaServicios',
-        'cita.citaServicios.servicio'
-      ],
+        'cita.citaServicios.servicio',
+        'recibos'],
     });
+
     if (!pago) {
       throw new NotFoundException(`Pago con ID ${id} no encontrado`);
     }
@@ -64,7 +65,14 @@ export class PagoService {
   async findByCita(idCita: number) {
     return this.pagoRepository.find({
       where: { idCita },
-      order: { fechaPago: 'DESC' }
+      order: { fechaPago: 'DESC' },
+      relations: ['cita',
+        'cita.paciente',
+        'cita.paciente.persona',
+        'cita.agenda',
+        'cita.citaServicios',
+        'cita.citaServicios.servicio',
+        'recibos'],
     });
   }
 

@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn, OneToMany } from 'typeorm';
+import { DetalleCompra } from 'detalle-compra/entities/detalle-compra.entity';
 
 @Entity({ name: 'producto' })
 export class Producto {
-  @PrimaryGeneratedColumn({ name: 'idProducto'})
+  @PrimaryGeneratedColumn({ name: 'idProducto' })
   idProducto: number;
 
   @Column({ name: 'nombreProducto', type: 'varchar', length: 100 })
@@ -22,4 +23,9 @@ export class Producto {
 
   @Column({ name: 'habilitado', type: 'tinyint', width: 1, default: () => '1' })
   habilitado: boolean;
+
+  @OneToMany(() => DetalleCompra, (detalle) => detalle.producto)
+  detallesCompra: DetalleCompra[];
+
+
 }

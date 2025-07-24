@@ -49,6 +49,7 @@ export class AuthService {
       rol: user.rol?.nombre,
       privilegios: user.rol?.rolPrivilegios?.map(rp => rp.privilegio?.nombre) ?? [],
       persona: {
+       idPersona: user.persona?.idPersona || user.persona?.id,
         nombres: user.persona?.nombres,
         apellidoPaterno: user.persona?.apellidoPaterno,
         apellidoMaterno: user.persona?.apellidoMaterno,

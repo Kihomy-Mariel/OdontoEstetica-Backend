@@ -7,6 +7,7 @@ export class LoginResponseDto {
   privilegios: string[];
 
   persona: {
+    idPersona: number;
     nombres: string;
     apellidoPaterno: string;
     apellidoMaterno: string;

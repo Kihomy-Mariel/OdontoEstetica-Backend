@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Compra } from './entities/compra.entity';
@@ -9,27 +9,49 @@ export class CompraService {
   constructor(
     @InjectRepository(Compra)
     private readonly compraRepository: Repository<Compra>,
-  ) {}
+  ) { }
 
-  async create(dto: CreateCompraDto): Promise<Compra> {
-    const nuevaCompra = this.compraRepository.create(dto);
-    return await this.compraRepository.save(nuevaCompra);
-  }
+async create(createCompraDto: CreateCompraDto): Promise<Compra> {
+  const { detalles, ...resto } = createCompraDto;
+
+  const precioTotalCalculado = detalles.reduce((total, item) => {
+    return total + item.cantidad * item.precioUnitario;
+  }, 0);
+
+  const compra = this.compraRepository.create({
+    ...resto,
+    precioTotalCompra: precioTotalCalculado,
+    detalles,
+  });
+
+  return this.compraRepository.save(compra);
+}
+
+
 
   async findAll(): Promise<Compra[]> {
-    return await this.compraRepository.find({ relations: ['empleado', 'proveedor'] });
+    return this.compraRepository.find({
+      relations: ['empleado', 'proveedor', 'detalles', 'detalles.producto'],
+    });
   }
 
-  async findOne(id: number): Promise<Compra | null>  {
-    return await this.compraRepository.findOne({
-  relations: {
-    empleado: true,
-    proveedor: true,
-  },
-  where: {
-    idCompra: id,
-  },
-});
 
+  async findOne(id: number): Promise<Compra> {
+    const compra = await this.compraRepository.findOne({
+      where: { idCompra: id },
+      relations: [
+        'empleado',
+        'proveedor',
+        'detalles',
+        'detalles.producto',
+      ],
+    });
+
+    if (!compra) {
+      throw new NotFoundException(`Compra ${id} no encontrada`);
+    }
+
+    return compra;
   }
+
 }

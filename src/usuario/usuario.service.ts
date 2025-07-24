@@ -42,7 +42,7 @@ export class UsuarioService {
     return this.userRepo.findOne({
       where: { username },
       relations: [
-        'persona',                //  sigue funcionando
+        'persona',     
         'rol',
         'rol.rolPrivilegios',
         'rol.rolPrivilegios.privilegio',

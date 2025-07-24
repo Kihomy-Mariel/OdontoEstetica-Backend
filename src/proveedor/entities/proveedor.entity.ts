@@ -1,9 +1,9 @@
-import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
+import { Entity, Column,  OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Compra } from 'compra/entities/compra.entity';
 
 @Entity('proveedor')
 export class Proveedor {
-  @PrimaryColumn()
+@PrimaryGeneratedColumn()
   idProveedor: number;
 
   @Column({ length: 100 })

@@ -7,13 +7,14 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { UpdateEmpleadoFullDto } from './dto/update-empleado-full.dto';
 import { Persona } from '../persona/entities/persona.entity';
 import { Usuario } from '../usuario/entities/usuario.entity';
+import { Rol } from '../rol/entities/rol.entity';
 
 @Injectable()
 export class EmpleadoService {
   constructor(
     private readonly usuarioService: UsuarioService,
-     private readonly dataSource: DataSource,
-    @InjectRepository(Empleado) 
+    private readonly dataSource: DataSource,
+    @InjectRepository(Empleado)
     private readonly empleadoRepo: Repository<Empleado>,
   ) { }
 
@@ -48,6 +49,8 @@ export class EmpleadoService {
       const empleadoRepo = manager.getRepository(Empleado);
       const personaRepo = manager.getRepository(Persona);
       const usuarioRepo = manager.getRepository(Usuario);
+      const rolRepo = manager.getRepository(Rol);
+
 
       const empleado = await empleadoRepo.findOne({
         where: { idEmpleado: dto.idEmpleado },
@@ -64,9 +67,26 @@ export class EmpleadoService {
 
       // 3. Actualizar usuario si hay datos
       if (dto.usuario) {
-        Object.assign(empleado.persona.usuario, dto.usuario);
+        const { idRol, username, password } = dto.usuario;
+
+        if (idRol) {
+          const rolRepo = manager.getRepository(Rol);
+          const nuevoRol = await rolRepo.findOne({ where: { idRol } });
+          if (!nuevoRol) throw new NotFoundException('Rol no encontrado');
+          empleado.persona.usuario.rol = nuevoRol;
+        }
+
+        if (username) {
+          empleado.persona.usuario.username = username;
+        }
+
+        if (password) {
+          empleado.persona.usuario.password = password;
+        }
+
         await usuarioRepo.save(empleado.persona.usuario);
       }
+
 
       // 4. Actualizar empleado si hay datos
       if (dto.empleado) {
@@ -82,7 +102,7 @@ export class EmpleadoService {
     });
   }
 
-    async deleteEmpleado(idEmpleado: number): Promise<string> {
+  async deleteEmpleado(idEmpleado: number): Promise<string> {
     return this.dataSource.transaction(async manager => {
       const empleadoRepo = manager.getRepository(Empleado);
       const personaRepo = manager.getRepository(Persona);
@@ -95,11 +115,11 @@ export class EmpleadoService {
       if (!empleado) throw new NotFoundException('Empleado no encontrado');
 
 
-    // *** VALIDACIÓN: Impedir borrar si usuario es ADM ***
-    const usuario = empleado.persona.usuario;
-    if (usuario?.rol?.idRol === 5) {
-      throw new BadRequestException('No se puede eliminar un usuario con rol Administrador (ADM)');
-    }
+      // *** VALIDACIÓN: Impedir borrar si usuario es ADM ***
+      const usuario = empleado.persona.usuario;
+      if (usuario?.rol?.idRol === 5) {
+        throw new BadRequestException('No se puede eliminar un usuario con rol Administrador (ADM)');
+      }
 
       // Borrado lógico en cascada
       empleado.habilitado = false;

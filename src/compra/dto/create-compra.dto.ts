@@ -1,29 +1,42 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
-export enum EstadoCompra {
-  PENDIENTE = 'pendiente',
-  COMPLETADO = 'completado',
-  CANCELADO = 'cancelado',
+export class DetalleCompraDto {
+  @IsInt()
+  idProducto: number;
+
+  @IsInt()
+  cantidad: number;
+
+  @IsNumber()
+  precioUnitario: number;
 }
 
 export class CreateCompraDto {
-  @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   idEmpleado: number;
 
-  @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   idProveedor: number;
 
-  @IsNotEmpty()
   @IsDateString()
-  fechaCompra: string;
+  fechaCompra: string; // formato ISO: "YYYY-MM-DD"
 
-  @IsNotEmpty()
-  @IsEnum(EstadoCompra)
-  estado: EstadoCompra;
+  @IsString()
+  estado: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  precioTotalCompra: number;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => DetalleCompraDto)
+  detalles: DetalleCompraDto[];
 }

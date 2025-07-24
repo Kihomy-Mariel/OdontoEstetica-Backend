@@ -10,7 +10,7 @@ export class ProductoService {
   constructor(
     @InjectRepository(Producto)
     private productoRepository: Repository<Producto>,
-  ) {}
+  ) { }
 
   async create(createProductoDto: CreateProductoDto): Promise<Producto> {
     const producto = this.productoRepository.create({
@@ -21,8 +21,11 @@ export class ProductoService {
   }
 
   async findAll(): Promise<Producto[]> {
-    return this.productoRepository.find();
+    return this.productoRepository.find({
+      where: { habilitado: true },
+    });
   }
+
 
   async findOne(id: number): Promise<Producto> {
     const producto = await this.productoRepository.findOne({ where: { idProducto: id } });

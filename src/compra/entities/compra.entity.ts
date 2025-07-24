@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Empleado } from '../../empleado/entities/empleado.entity';
 import { Proveedor } from '../../proveedor/entities/proveedor.entity';
+import { DetalleCompra } from '../../detalle-compra/entities/detalle-compra.entity';
 
 @Entity('compra')
 export class Compra {
@@ -29,4 +30,8 @@ export class Compra {
   @ManyToOne(() => Proveedor, proveedor => proveedor.compras)
   @JoinColumn({ name: 'idProveedor' })
   proveedor: Proveedor;
+
+  @OneToMany(() => DetalleCompra, (detalle) => detalle.compra, { cascade: true })
+  detalles: DetalleCompra[];
+  
 }

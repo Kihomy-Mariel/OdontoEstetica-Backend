@@ -17,7 +17,7 @@ export class CreateCitaDto {
 
   @IsOptional()
   @IsIn(['PENDIENTE', 'CONFIRMADA', 'CANCELADA'])
-  estado?: CitaEstado = 'PENDIENTE';
+  estado?: CitaEstado = 'CONFIRMADA';
 
   @IsString()
   motivo: string;
